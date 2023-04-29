@@ -1,0 +1,31 @@
+version: '3.8'
+services:
+  api:
+    container_name: api
+    restart: always
+    build: .
+    ports:
+      - ${PORT}:${PORT}
+    environment:
+      DB_HOST: ${DB_CONTAINER_NAME}
+      DB_USER: ${DB_USER}
+      DB_PASSWORD: ${DB_PASSWORD}
+    depends_on:
+      - db
+    volumes:
+    - .:/usr/src/app
+    - /usr/src/app/node_modules/bcrypt
+
+  db:
+    container_name: ${DB_CONTAINER_NAME}
+    image: postgres:latest
+    restart: always
+    volumes:
+       - data:/var/lib/postgresql/data
+    environment:
+      - POSTGRES_USER=${DB_USER}
+      - POSTGRES_PASSWORD=${DB_PASSWORD}
+      - POSTGRES_DB=${DB_NAME}
+
+volumes: 
+  data:

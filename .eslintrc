@@ -13,6 +13,7 @@
         "project": "./tsconfig.json"
     },
     "rules": {
-        "indent": ["error", 4]
+        "@typescript-eslint/no-namespace": 0,
+        "@typescript-eslint/no-empty-interface": 0
     }
 }
