@@ -7,6 +7,7 @@ import * as dotenv from 'dotenv';
 
 import { dataSource } from './db/data-source';
 import { routes } from './routes';
+import { errorHandler } from './middlewares/errorHandler';
 
 dataSource
     .initialize()
@@ -27,6 +28,7 @@ app.use(cors());
 app.use(helmet());
 app.use(morgan('tiny'));
 app.use('/', routes);
+app.use(errorHandler);
 
 app.get('/', (_, res: Response) => res.status(200).send());
 
