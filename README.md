@@ -35,3 +35,40 @@ json body ex: {
 }
 
 - DELETE: http://localhost:5050/users/{id}
+
+In regards to finding the bug in the following code:
+
+```
+const fs = require('fs');
+
+function readFile(path, callback) {
+  fs.readFile(path, 'utf8', (err, data) => {
+    if (err) {
+      callback(err);
+    } else {
+      callback(data);
+    }
+  });
+}
+
+function writeFile(path, data, callback) {
+  fs.writeFile(path, data, 'utf8', err => {
+    if (err) {
+      callback(err);
+    } else {
+      callback();
+    }
+  });
+}
+
+readFile('input.txt', (err, data) => {
+  if (err) throw new Error(err);
+  const newData = data.toUpperCase();
+
+  writeFile('output.txt', newData, () => {
+    console.log('File written successfully');
+  });
+});
+```
+
+I've run the code and it worked well first try so I tried a case where the file path would be wrong and I would get an error about `data.toUpperCase not a being a function` and that wouldn't reflect the actual issue. So, I added to the readFile call the `err` parameter as well so I could throw the actual error in the `if` statement before the `newData` declaration.
