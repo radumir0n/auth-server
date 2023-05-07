@@ -6,7 +6,7 @@ To test the application follow the next steps:
 
 1) Clone the repository on your local machine
 2) Run `npm install` in the folder with the application
-3) Run `npm run docker:build" to create the containers and start the environment
+3) Run `npm run docker:build` to create the containers and start the environment
 
 Endpoints for testing:
 
