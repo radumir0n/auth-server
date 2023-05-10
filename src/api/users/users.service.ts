@@ -4,6 +4,7 @@ import { comparePassword, createJWT, hashPassword } from '../../middlewares/auth
 import { AppUser, UserCreation, UserCredentials, UserUpdate } from '../../models/user';
 
 const CREDENTIALS_MIN_LENGTH = 6;
+const emailValidationRegex = /^[\w-\.]+@([\w-]+\.)+[\w-]{2,}$/;
 
 export const getUserById = async (id: string): Promise<AppUser> => {
     const user = await dataSource
@@ -49,7 +50,11 @@ export const createUser = async (user: UserCreation): Promise<AppUser> => {
     }
 
     if (await getUserByUsername(username)) {
-        throw new Error('Username is taken');
+        throw new Error('Username already exists');
+    }
+
+    if (!emailValidationRegex.test(email)) {
+        throw new Error('Email is not valid');
     }
 
     const id = await dataSource
@@ -99,7 +104,6 @@ export const deleteUserById = async (id: string): Promise<void> => {
 export const authenticateUser = async (userCredentials: UserCredentials): Promise<string> => {
     const { username, password } = userCredentials;
     const user = await getUserByUsername(username);
-    console.log("TEST::: ", user)
     const isValidPassword = await comparePassword(password, user.password);
 
     if (!isValidPassword) {

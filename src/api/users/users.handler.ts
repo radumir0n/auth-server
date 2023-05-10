@@ -25,7 +25,7 @@ export const getUser = async (req: Request, res: Response, next: NextFunction) =
         const id = req.params.id;
         const user = await getUserById(id);
     
-        res.status(200).json({ user })
+        res.status(200).json(user)
     } catch (err) {
         return next(err);
     }
